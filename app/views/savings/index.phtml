@@ -1,0 +1,156 @@
+<div id="transactions-container" v-cloak>
+    <div class="row">
+        <?php echo $this->partial('partials/sidenav'); ?>
+        <section class="top-nav container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h4>Member Savings</h4>
+                </div>
+                <div class="col-sm-9">
+                    <div class="filter text-right full-width">
+                        <ul class="list-inline">
+                           
+                            <li>
+                                <select v-model="perPage" class="form-control" data-width="auto">
+                                    <option value="10">List 10</option>
+                                    <option value="25">List 25</option>
+                                    <option value="50">List 50</option>
+                                    <option value="100">List 100</option>
+                                    <option value="250">List 250</option>
+                                </select>
+                            </li>
+                            
+                            <li>
+                                <div id="daterangepicker" class="" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                    <span></span> <b class="caret"></b>
+                                </div>
+                            </li>
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                <ul class="list-inline">
+                    <li>
+                      <strong>Total Savings: {{total_savings}} </strong>
+                    </li>
+                  </ul>
+               </div>
+                <div class="col-sm-6">
+                    <div class="filter text-right full-width">
+                        <div class="pull-right">
+                           
+
+                            <div class="btn-group btn-group-sm">
+                                <span class="btn-group"><input class="form-control input-sm" placeholder="Search Savings" v-model="search"/></span>
+                                <button @click="searchsavings" class="btn btn-default"> Search </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <div>
+                
+                <div v-show="savings_table_loading"><div style="display: inline-block;" class="loader left"></div><span class="right margin-left-lg"><strong>Member Savings Loading...</strong></span></div>
+           
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="resolved">
+                    <div class="table-responsive">
+                        <vuetable v-ref:vuetable_resolved
+                                  api-url="savings/savings"
+                                  pagination-path=""
+                                  detail-row-id="savingsId"
+                                  :fields="columns"
+                                  :sort-order="sortOrder"
+                                  :multi-sort="multiSort"
+                                  :pagination-component="paginationComponent"
+                                  :item-actions="itemActions"
+                                  :append-params="moreParams"
+                                  :per-page="perPage"
+                                  table-class="table table-striped table-bordered table-hover"
+                                  ascending-icon="fa fa-chevron-up"
+                                  descending-icon="fa fa-chevron-down"
+                                  pagination-class=""
+                                  pagination-info-class=""
+                                  :pagination-component-class=""
+                                  :pagination-info-template="paginationInfoTemplate"
+                                  pagination-info-no-data-template="The requested query returned no result"
+                                  wrapper-class="vuetable-wrapper"
+                                  table-wrapper=".vuetable-wrapper"
+                                  loading-class="loading"
+                                  detail-row-component="my-detail-row"
+                                  detail-row-transition="expand"
+                                  ></vuetable>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="prospect-new">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Savings</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form">
+                       <div class="form-group">
+                            <label>Member Name</label>
+                            <select v-model='selected_member' class="form-control">
+                                <option selected="" value="0">Select Member</option>
+                                <option v-for='member in members' v-bind:value='member.memberId'>{{member.memeberName}}</option>
+                            </select>
+                            <!-- <div v-show="source_select_loading" style="display: inline-block;" class="select-loader right"></div> -->
+                        </div>
+                        <!-- <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>ID Number</label>
+                                    <input type="text" class="form-control" placeholder="Enter ID" v-model='prospect_id_number'/>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Phone Number</label>
+                                    <input type="text" class="form-control" placeholder="Enter Phone Number" v-model='prospect_mobile_number'/>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label>Savings Amount</label>
+                                    <input type="number" class="form-control" placeholder="Enter Savings Amount" v-model='savings_amount'/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                       <!--  <div class="form-group">
+                            <input type="checkbox" id="checkbox" v-model="is_other_source">
+                            <label for="checkbox">Other Source</label>
+                        </div>
+                        <div v-show="is_other_source" class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" placeholder="Enter Other Source" v-model='prospect_other_source'/>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="divider"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btn-prospect-new" @click='addProspect' type="button" class="btn bg-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Adding Prospect">Add Saving</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,164 @@
+<div id="customers-container" v-cloak>
+    <div class="row">
+        <?php echo $this->partial('partials/sidenav'); ?>
+        <section class="top-nav container">
+            <div class="row">
+                <div class="col-sm-2">
+                    <h3>Member Loans</h3>
+                </div>
+                <div class="col-sm-10">
+                    <div class="filter text-right full-width">
+                        <ul class="list-inline">
+                          
+                            <li>
+                                <select v-model="perPage" class="form-control" data-width="auto">
+                                    <option value="10">List 10</option>
+                                    <option value="25">List 25</option>
+                                    <option value="50">List 50</option>
+                                    <option value="100">List 100</option>
+                                    <option value="250">List 250</option>
+                                </select>
+                            </li>
+                           
+                            <li >
+                                <div id="daterangepicker" class="" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                    <span></span> <b class="caret"></b>
+                                </div>
+                            </li>
+                          
+                        </ul>
+                    </div> 
+                </div>
+            </div>
+            <div class="row">
+               <div class="col-sm-6">
+                <ul class="list-inline">
+                    <li>
+                      <strong>Total Loans: {{total_loans}} </strong>
+                    </li>
+                    <li>
+                        <strong>Total Paid: {{total_paid}} </strong> 
+                    </li>
+                  </ul>
+               </div>
+                <div class="col-sm-6">
+                    <div class="filter text-right full-width">
+                        <div class="pull-right">
+                            <div class="btn-group btn-group-sm">
+                                <span class="btn-group"><input class="form-control input-sm" placeholder="Search loans" v-model="search"/></span>
+                                <button @click="searchCustomers" class="btn btn-default"> Search </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <div>
+            
+                <div >
+                    <div v-show="loan_table_loading"><div style="display: inline-block;" class="loader left"></div><span class="right margin-left-lg"><strong>Loans Data Loading...</strong></span></div>
+                </div>
+            </div> 
+            <div class="tab-content">
+                <div class="tab-pane active" id="customers">
+                    <div class="table-responsive">
+                        <vuetable v-ref:vuetable_loans
+                                  api-url="loans/loans"
+                                  pagination-path=""
+                                  detail-row-id="loanId" 
+                                  :fields="columns"
+                                  :sort-order="sortOrder"
+                                  :multi-sort="multiSort"
+                                  :pagination-component="paginationComponent"
+                                  :item-actions="itemActions"
+                                  :append-params="moreParams"
+                                  :per-page="perPage"
+                                  :load-on-start="loadOnStart" 
+                                  table-class="table table-striped table-bordered table-hover"
+                                  ascending-icon="fa fa-chevron-up"
+                                  descending-icon="fa fa-chevron-down"
+                                  pagination-class=""
+                                  pagination-info-class=""
+                                  :pagination-component-class=""
+                                  :pagination-info-template="paginationInfoTemplate"
+                                  pagination-info-no-data-template="The requested query returned no result"
+                                  wrapper-class="vuetable-wrapper1"
+                                  table-wrapper=".vuetable-wrapper1"
+                                  loading-class="load1"
+                                  detail-row-component="my-detail-row"
+                                  detail-row-transition="expand"
+                                  ></vuetable>
+                    </div>
+                </div>
+               
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" role="dialog" id="pay-loan">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Pay Loan</h4>
+                </div>
+                <div class="modal-body">
+                   <div class="form-group">
+                            <input type="checkbox" id="checkbox" v-model="is_from_shares">
+                            <label for="checkbox">From Shares</label>
+                    </div>
+                    <div class="form">
+                        <div class="form-group">
+                              <label>Repay Amount</label>
+                              <input type="number" class="form-control" placeholder="Loan repayment amount" v-model='repayment_amount'/>
+                              
+                        </div>
+                      
+                        <div class="divider"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btn-pay-loan" @click='payLoan' type="button" class="btn bg-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Adding Savings">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="edit-loan">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit Loan</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form">
+                        <div class="form-group">
+                                    <label>Loan Amount</label>
+                                    <input type="number" class="form-control" placeholder="Enter Loan Amount" v-model='loan_amount'/>
+                          </div>
+                          <div class="form-group">
+                                    <label>Paid Amount</label>
+                                    <input type="number" class="form-control" placeholder="Loan repayment amount" v-model='repayment_amount'/>
+                          </div>
+
+                           <div class="form-group">
+                                    <label>Due Date</label>
+                                    <input type="date" class="form-control" placeholder="Due date" v-model='loan_due_date'/>
+                            </div>
+                        <div class="divider"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btn-edit-loan" @click='editLoan' type="button" class="btn bg-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Updating Agent">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

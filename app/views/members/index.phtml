@@ -1,0 +1,273 @@
+<div id="agents-container" v-cloak>
+    <div class="row">
+        <?php echo $this->partial('partials/sidenav'); ?>
+        <section class="content container">
+            <div class="row">
+                <div class="col-sm-5">
+                    <h3 class="padding-bottom-md">Members <span class="pull-right"><button class="btn bg-primary btn-sm" data-toggle="modal" data-target="#agent-new"><strong>+ New Member</strong></button></span></h3>
+                    
+                    <div class="table-responsive">
+                        <div v-show="agents_table_loading"><div style="display: inline-block;" class="loader left"></div><span class="right margin-left-lg"><strong>Members Data Loading...</strong></span></div>
+                        <vuetable v-ref:vuetable_agents
+                                  api-url="members/members"
+                                  pagination-path=""
+                                  detail-row-id="userID"
+                                  :fields="columns"
+                                  :sort-order="sortOrder"
+                                  :multi-sort="multiSort"
+                                  :pagination-component="paginationComponent"
+                                  :per-page="perPage"
+                                  :append-params="moreParams" 
+                                  :load-on-start="loadOnStart"
+                                  table-class="table table-striped table-bordered table-hover"
+                                  ascending-icon="fa fa-chevron-up"
+                                  descending-icon="fa fa-chevron-down"
+                                  pagination-class=""
+                                  pagination-info-class=""
+                                  :pagination-component-class=""
+                                  :pagination-info-template="paginationInfoTemplate"
+                                  pagination-info-no-data-template="The requested query returned no result"
+                                  wrapper-class="vuetable-wrapper"
+                                  table-wrapper=".vuetable-wrapper"
+                                  loading-class="loading"
+                                  detail-row-component="my-detail-row"
+                                  detail-row-transition="expand"
+                                  ></vuetable>
+                    </div>
+                </div>
+                <div v-if="is_agent_selected" class="col-sm-7 padding-md border bg-white">
+                    <div class="row">
+                        <div class="col-sm-12 padding-bottom-lg">
+                            <div class="col-sm-4 padding-bottom-lg">
+                                <h3 class="pull-left">{{selected_agent.memberName}}<br />
+                                  
+                                </h3>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="pull-left">
+                                   
+                                    <ul class="list-inline">
+                                       <li><button class="btn bg-primary btn-md" data-toggle="modal" data-target="#new-loan" id="btn-new-loan"><strong>+ New Loan</strong></button></li>
+                                        <li><button class="btn bg-primary btn-md" data-toggle="modal" data-target="#new-savings" id="btn-new-savings"><strong>+ New Savings</strong></button></li>
+                                        <li><button class="btn bg-primary btn-md" data-toggle="modal" data-target="#transfer-savings" id="btn-transfer-savings"><strong>Transfer</strong></button></li>
+
+                                    </ul>
+                                </div>
+                              
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#sales" role="tab" data-toggle="tab">Savings</a></li>
+                                <li role="presentation"><a href="#assigned-products" role="tab" data-toggle="tab">Loans</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="sales">
+                                    <div class="table-responsive">
+                                        <vuetable v-ref:vuetable_savings
+                                                  pagination-path=""
+                                                  :api-url="agent_sales_url"
+                                                  detail-row-id="savingsId"
+                                                  :fields="savingColumns"
+                                                  :sort-order="saleSortOrder"
+                                                  :multi-sort="multiSort"
+                                                  :pagination-component="paginationComponent"
+                                                  :per-page="perPage"
+                                                  load-on-start="false"
+                                                  table-class="table table-striped table-bordered table-hover"
+                                                  ascending-icon="fa fa-chevron-up"
+                                                  descending-icon="fa fa-chevron-down"
+                                                  pagination-class=""
+                                                  pagination-info-class=""
+                                                  :pagination-component-class=""
+                                                  :pagination-info-template="salePaginationInfoTemplate"
+                                                  pagination-info-no-data-template="The requested query returned no result"
+                                                  wrapper-class="vuetable-wrapper1"
+                                                  table-wrapper=".vuetable-wrapper1"
+                                                  loading-class="load"
+                                                  detail-row-component="my-detail-row"
+                                                  detail-row-transition="expand"
+                                                  ></vuetable>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="assigned-products">
+                                    <div class="table-responsive">
+                                        <vuetable v-ref:vuetable_loans
+                                                  pagination-path=""
+                                                  :api-url="agent_items_url"
+                                                  detail-row-id="loanId"
+                                                  :fields="loanColumns"
+                                                  :sort-order="itemSortOrder"
+                                                  :multi-sort="multiSort"
+                                                  :pagination-component="paginationComponent"
+                                                  :per-page="perPage"
+                                                  load-on-start="false"
+                                                  table-class="table table-striped table-bordered table-hover"
+                                                  ascending-icon="fa fa-chevron-up"
+                                                  descending-icon="fa fa-chevron-down"
+                                                  pagination-class=""
+                                                  pagination-info-class=""
+                                                  :pagination-component-class=""
+                                                  :pagination-info-template="itemPaginationInfoTemplate"
+                                                  pagination-info-no-data-template="The requested query returned no result"
+                                                  wrapper-class="vuetable-wrapper2"
+                                                  table-wrapper=".vuetable-wrapper2"
+                                                  loading-class="load2"
+                                                  detail-row-component="my-detail-row"
+                                                  detail-row-transition="expand"
+                                                  ></vuetable>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="agent-new">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Member</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" placeholder="Enter Names" v-model="full_names"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" class="form-control" placeholder="Enter Phone Number" v-model="phone_number"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label>ID Number</label>
+                            <input type="text" class="form-control" placeholder="Enter ID Number" v-model="id_number"/>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Member Role</label>
+                            <select v-model="selected_role" class="form-control" data-width="auto">
+                                <option selected="" value="">Select Role</option>
+                                <option v-for="role in members" v-bind:value="role.roleID">{{role.roleName}}</option>
+                            </select>
+                            <div v-show="roles_select_loading" style="display: inline-block;" class="select-loader right"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btn-agent" type="button" class="btn bg-primary" @click="addMember" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Adding Agent">Add Member</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" tabindex="-1" role="dialog" id="new-loan">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Create Loan</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form">
+                        <div class="form-group">
+                                <!-- <div class="col-sm-12"> -->
+                                    <label>Loan Amount</label>
+                                    <input type="number" class="form-control" placeholder="Enter Loan Amount" v-model='loan_amount'/>
+                                <!-- </div> -->
+                          </div>
+                           <div class="form-group">
+                                <!-- <div class="col-sm-12"> -->
+                                    <label>Due Date</label>
+                                    <input type="date" class="form-control" placeholder="Due date" v-model='loan_due_date'/>
+                                <!-- </div> -->
+                            </div>
+                        <div class="divider"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btn-new-loan" @click='createLoan' type="button" class="btn bg-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Updating Agent">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="new-savings">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Add Savings</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label>Savings Amount</label>
+                                    <input type="number" class="form-control" placeholder="Enter Savings Amount" v-model='savings_amount'/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                      
+                        <div class="divider"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btn-saving-new" @click='addSaving' type="button" class="btn bg-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Adding Savings">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="transfer-savings">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Transfer Savings</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form">
+
+                      <div class="form-group">
+                            <label>Transfer to</label>
+                            <select v-model="selected_dest_member" class="form-control" data-width="auto">
+                                <option selected="" value="">Select Member</option>
+                                <option v-for="member in membersData" v-bind:value="member.memberId">{{member.memberName}}</option>
+                            </select>
+                            <div v-show="roles_select_loading" style="display: inline-block;" class="select-loader right"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label>Savings Amount</label>
+                                    <input type="number" class="form-control" placeholder="Enter Amount to Transfer" v-model='transfer_amount'/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="divider"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btn-saving-new" @click='transferSaving' type="button" class="btn bg-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Adding Savings">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

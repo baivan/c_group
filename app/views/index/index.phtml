@@ -1,0 +1,25 @@
+<div id="index-container" v-cloak>
+    <div class="row">
+        <div class="container">
+            <section class="col-sm-4 col-sm-offset-4 padding-top-xl">
+                <h3 class="text-center">Login</h3>
+                <div v-if="alert_visible" class="alert alert-info alert-dismissable margin-top-md" id="alert-dialog">
+                    <a @click="dismiss" href="#" class="close" aria-label="close">×</a>
+                    <strong><i class="fa fa-info-circle"></i></strong> {{alert_message}}
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group padding-top-sm">
+                        <label>Username</label>
+                        <input type="text" class="form-control" placeholder="Enter username" v-model="username"/>
+                    </div>
+                    <div class="form-group padding-bottom-md">
+                        <label>Password</label>
+                        <input type="password" class="form-control" placeholder="Enter password" v-model="password"/>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-md btn-block" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Authenticating User"
+                            @click="login">Login</button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

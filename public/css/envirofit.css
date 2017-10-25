@@ -1,0 +1,354 @@
+.ui.vertical.stripe h3 {
+    font-size: 2em;
+}
+
+.secondary.pointing.menu .toc.item {
+    display: none;
+}
+
+.vuetable {
+    margin-top: 1em !important;
+}
+
+.vuetable-wrapper.ui.basic.segment {
+    padding: 0em;
+}
+
+.vuetable button.ui.button {
+    padding: .5em .5em;
+    font-weight: 400;
+}
+
+.vuetable button.ui.button i.icon {
+    margin: 0;
+}
+
+.vuetable th.sortable:hover {
+    color: #2185d0;
+    cursor: pointer;
+}
+
+.vuetable-actions {
+    width: 11%;
+    padding: 12px 0px;
+    text-align: center;
+}
+
+.vuetable-actions > button {
+    padding: 3px 6px;
+    margin-right: 4px;
+}
+
+.vuetable-actions > button .activate-client{
+    color: red;
+}
+
+.vuetable-pagination {
+    background: #f9fafb !important;
+}
+
+.vuetable-pagination .btn {
+    margin: 2px;
+}
+
+.vuetable-pagination-info {
+    float: left;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 15px;
+}
+
+ul.pagination {
+    margin: 0px;
+}
+.vuetable-pagination-component {
+    float: right;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 15px;
+}
+.vuetable-pagination-component li a {
+    cursor: pointer;
+}
+[v-cloak] {
+    display: none;
+}
+.highlight {
+    background-color: yellow;
+}
+.vuetable-detail-row {
+    height: 200px;
+}
+.detail-row {
+    margin-left: 40px;
+}
+.expand-transition {
+    transition: all .5s ease;
+}
+.expand-enter, .expand-leave {
+    height: 0;
+    opacity: 0;
+}
+
+/* Loading Animation: */
+.vuetable-wrapper {
+    opacity: 1;
+    position: relative;
+    filter: alpha(opacity=100); /* IE8 and earlier */
+}
+.vuetable-wrapper1 {
+    opacity: 1;
+    position: relative;
+    filter: alpha(opacity=100); /* IE8 and earlier */
+}
+
+.vuetable-wrapper2 {
+    opacity: 1;
+    position: relative;
+    filter: alpha(opacity=100); /* IE8 and earlier */
+}
+
+.vuetable-wrapper3 {
+    opacity: 1;
+    position: relative;
+    filter: alpha(opacity=100); /* IE8 and earlier */
+}
+.loading {
+    opacity:0.4;
+    transition: opacity .3s ease-in-out;
+    -moz-transition: opacity .3s ease-in-out;
+    -webkit-transition: opacity .3s ease-in-out;
+}
+
+.load {
+    opacity:0.4;
+    transition: opacity .3s ease-in-out;
+    -moz-transition: opacity .3s ease-in-out;
+    -webkit-transition: opacity .3s ease-in-out;
+}
+
+.load1 {
+    opacity:0.4;
+    transition: opacity .3s ease-in-out;
+    -moz-transition: opacity .3s ease-in-out;
+    -webkit-transition: opacity .3s ease-in-out;
+}
+
+.load2 {
+    opacity:0.4;
+    transition: opacity .3s ease-in-out;
+    -moz-transition: opacity .3s ease-in-out;
+    -webkit-transition: opacity .3s ease-in-out;
+}
+
+.load3 {
+    opacity:0.4;
+    transition: opacity .3s ease-in-out;
+    -moz-transition: opacity .3s ease-in-out;
+    -webkit-transition: opacity .3s ease-in-out;
+}
+
+.loading:after {
+    position: absolute;
+    content: '';
+    top: 40%;
+    left: 50%;
+    margin: -30px 0 0 -30px;
+    border-radius: 100%;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    border: 4px solid #000;
+    height: 60px;
+    width: 60px;
+    background: transparent !important;
+    display: inline-block;
+    -webkit-animation: pulse 1s 0s ease-in-out infinite;
+    animation: pulse 1s 0s ease-in-out infinite;
+}
+
+.load:after {
+    position: absolute;
+    content: '';
+    top: 40%;
+    left: 50%;
+    margin: -30px 0 0 -30px;
+    border-radius: 100%;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    border: 4px solid #000;
+    height: 60px;
+    width: 60px;
+    background: transparent !important;
+    display: inline-block;
+    -webkit-animation: pulse 1s 0s ease-in-out infinite;
+    animation: pulse 1s 0s ease-in-out infinite;
+}
+
+.load1:after {
+    position: absolute;
+    content: '';
+    top: 40%;
+    left: 50%;
+    margin: -30px 0 0 -30px;
+    border-radius: 100%;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    border: 4px solid #000;
+    height: 60px;
+    width: 60px;
+    background: transparent !important;
+    display: inline-block;
+    -webkit-animation: pulse 1s 0s ease-in-out infinite;
+    animation: pulse 1s 0s ease-in-out infinite;
+}
+
+.load2:after {
+    position: absolute;
+    content: '';
+    top: 40%;
+    left: 50%;
+    margin: -30px 0 0 -30px;
+    border-radius: 100%;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    border: 4px solid #000;
+    height: 60px;
+    width: 60px;
+    background: transparent !important;
+    display: inline-block;
+    -webkit-animation: pulse 1s 0s ease-in-out infinite;
+    animation: pulse 1s 0s ease-in-out infinite;
+}
+
+.load3:after {
+    position: absolute;
+    content: '';
+    top: 40%;
+    left: 50%;
+    margin: -30px 0 0 -30px;
+    border-radius: 100%;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    border: 4px solid #000;
+    height: 60px;
+    width: 60px;
+    background: transparent !important;
+    display: inline-block;
+    -webkit-animation: pulse 1s 0s ease-in-out infinite;
+    animation: pulse 1s 0s ease-in-out infinite;
+}
+@keyframes pulse {
+    0% {
+        -webkit-transform: scale(0.6);
+        transform: scale(0.6); }
+    50% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        border-width: 12px; }
+    100% {
+        -webkit-transform: scale(0.6);
+        transform: scale(0.6); }
+}
+
+.table-header{
+    color: #c61a1a;
+}
+
+.table-header-right{
+    color: #c61a1a;
+    text-align: right;
+}
+
+.table-options-header{
+    color: #c61a1a;
+    text-align: center;
+}
+
+.table-data{
+    /*font-family: 'arial'*/
+}
+
+.table-data-right{
+    text-align: right;
+}
+
+.link-table-data{
+    cursor: pointer;
+}
+
+.table-options-data{
+    text-align: center;
+}
+
+.select-header{
+    background: #c6beb0; 
+    color: #fff;
+}
+
+
+/*****************************************************************/
+
+.activate-client{
+    background-color: #ecf5f0 !important;
+    color: green !important;
+}
+
+.edit-client{
+    color: #c61a1a !important;
+    font-weight: bold;
+}
+
+.client-service{
+    color: #209cc8 !important;
+    font-weight: bold;
+}
+
+.active-tab{
+    color: #fff !important;
+}
+
+
+#product-tab .tab-content {
+    color : black;
+    background-color: #fff;
+    padding : 25px 0;
+}
+
+#product-tab .nav-tabs > li > a {
+    border-radius: 0;
+}
+
+
+
+.loader {
+    margin-top: 0;
+    border: 4px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 4px solid blue;
+    border-right: 4px solid green;
+    border-bottom: 4px solid red;
+    width: 35px;
+    height: 35px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+.select-loader {
+    margin-top: 1px;
+    border: 2px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 2px solid blue;
+    border-right: 2px solid green;
+    border-bottom: 2px solid red;
+    width: 20px;
+    height: 20px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/*===========================================================================*/
