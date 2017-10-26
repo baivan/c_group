@@ -10,19 +10,15 @@ $host = gethostname();
 $endpointUrl ="";
 if ($host == 'Jamess-MacBook-Air.local') {
    defined('LOG_PATH') || define('LOG_PATH', '/Applications/MAMP/htdocs/logs/envirofit/'); 
-   $endpointUrl = "http://192.168.100.2:8888/envirofit_api_v1";
 }
 elseif ($host == 'jamess-air') {
   defined('LOG_PATH') || define('LOG_PATH', '/Applications/MAMP/htdocs/logs/envirofit/'); 
-  $endpointUrl = "http://localhost:8888/envirofit_api_v1";
 }
 elseif($host == 'Jamess-Air'){
   defined('LOG_PATH') || define('LOG_PATH', '/Applications/MAMP/htdocs/logs/envirofit/'); 
-  $endpointUrl = "http://localhost:8888/envirofit_api_v1";
 }
 else{
-  defined('LOG_PATH') || define('LOG_PATH', '/var/www/logs/envirofit');  
-  $endpointUrl = "http://api.southwell.io/envirofit_api_v1";
+  defined('LOG_PATH') || define('LOG_PATH', '/usr/local/www/logs/c_group');  
 }
 
 
@@ -54,6 +50,8 @@ return new \Phalcon\Config([
         // This allows the baseUri to be understand project paths that are not in the root directory
         // of the webpspace.  This will break if the public/index.php entry point is moved or
         // possibly if the web server rewrite rules are changed. This can also be set to a static path.
+        //CREATE USER 'covenant'@'localhost' IDENTIFIED BY 'covenant';
+        //GRANT ALL PRIVILEGES ON `covenant`.* TO 'covenant'@'localhost';
         'baseUri' => preg_replace('/public([\/\\\\])index.php$/', '', $_SERVER["PHP_SELF"]),
     ],
     'log' => LOG_PATH . '/',

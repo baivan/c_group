@@ -1,0 +1,5 @@
+*.log
+app/logs/*
+/nbproject/*
+/cache/*
+/public/js/envirofit.js
