@@ -33,7 +33,7 @@ class LoginController extends Controller {
 
                  $this->session->set("user", $userData[0]);   
 
-                $role = $user->roleID;
+//                $role = $user->roleID;
 
                 /*switch ($role) {
                         case 1://agent
