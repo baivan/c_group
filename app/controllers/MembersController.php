@@ -77,7 +77,7 @@ class MembersController extends ControllerBase {
 
                 $user = new Users();
                 $user->memberId = $member->memberId;
-                $user->username = $requestData->fullNames;
+                $user->username = $mobile;
                 $user->password = $this->security->hash($code);
                 $user->code = $code;
                 $user->createdAt  = date("Y-m-d H:i:s");

@@ -27,7 +27,7 @@
         {{ javascript_include("vendor/bootstrap-3.3.7/js/bootstrap.min.js") }}
         {{ javascript_include("vendor/bootstrap-select/bootstrap-select.min.js") }}
         {{ javascript_include("js/moment.min.js") }}
-        {{ javascript_include("js/envirofit.js") }}
+        {{ javascript_include("js/covenant.js") }}
         {{ javascript_include("js/axios.min.js") }}
         {{ javascript_include("js/lodash.min.js") }}
         {{ javascript_include("js/numeral.min.js") }}
@@ -51,7 +51,7 @@
                 });
 
                 $(document).on('click', '#btn_password_change', function () {
-                    axios.get('http://api.southwell.io/envirofit/users/reset').then(function (response) {
+                    axios.get('http://chamachetu.com/c_group/members/reset').then(function (response) {
                         var data = response.data;
                         console.log("Response received: " + JSON.stringify(data));
                         if (data.status) {
