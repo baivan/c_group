@@ -95,6 +95,9 @@ class MembersController extends ControllerBase {
 
                 $dbTransaction->commit();
 
+                $member_message = "Dear ".$member->memberName.", your login password is $code";
+                $this->sendMessage($mobile,$member_message);
+
                 $response = [
                     'status' => TRUE,
                     'success' => "User created successfully"

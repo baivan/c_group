@@ -106,4 +106,41 @@ class ControllerBase extends Phalcon\Mvc\Controller {
         }
     }
 
+    public function sendMessage($msisdn, $message) {
+        $postData = array(
+            "sender" => "southwell",
+            "recipient" => trim($msisdn),
+            "message" => $message
+        );
+
+        $channelAPIURL = "api.southwell.io/fastSMS/public/api/v1/messages";
+        $username = "jamesnjuguna0@gmail.com";
+        $password = "29451501";
+
+
+        $httpRequest = curl_init($channelAPIURL);
+        curl_setopt($httpRequest, CURLOPT_NOBODY, true);
+        curl_setopt($httpRequest, CURLOPT_POST, true);
+        curl_setopt($httpRequest, CURLOPT_POSTFIELDS, json_encode($postData));
+        curl_setopt($httpRequest, CURLOPT_TIMEOUT, 10);
+        curl_setopt($httpRequest, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($httpRequest, CURLOPT_HTTPHEADER, array('Content-Type: application/json',
+            'Content-Length: ' . strlen(json_encode($postData))));
+        curl_setopt($httpRequest, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($httpRequest, CURLOPT_USERPWD, "$username:$password");
+        $postresponse = curl_exec($httpRequest);
+        $httpStatusCode = curl_getinfo($httpRequest, CURLINFO_HTTP_CODE); //get status code
+        curl_close($httpRequest);
+
+        $response = array(
+            'httpStatus' => $httpStatusCode,
+            'response' => json_decode($postresponse)
+        );
+
+        $logger = new FileAdapter($this->getLogFile());
+        $logger->log($message . ' ' . json_encode($response));
+
+        return $response;
+    }
+
 }
