@@ -155,7 +155,7 @@
                             <label>Member Role</label>
                             <select v-model="selected_role" class="form-control" data-width="auto">
                                 <option selected="" value="">Select Role</option>
-                                <option v-for="role in members" v-bind:value="role.roleID">{{role.roleName}}</option>
+                                <option v-for="role in roles" v-bind:value="role.roleID">{{role.roleName}}</option>
                             </select>
                             <div v-show="roles_select_loading" style="display: inline-block;" class="select-loader right"></div>
                         </div>
