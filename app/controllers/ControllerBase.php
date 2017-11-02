@@ -137,8 +137,8 @@ class ControllerBase extends Phalcon\Mvc\Controller {
             'response' => json_decode($postresponse)
         );
 
-        $logger = new FileAdapter($this->getLogFile());
-        $logger->log($message . ' ' . json_encode($response));
+        //$logger = new FileAdapter($this->getLogFile());
+        //$logger->log($message . ' ' . json_encode($response));
 
         return $response;
     }
