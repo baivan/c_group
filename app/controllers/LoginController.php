@@ -173,7 +173,9 @@ class LoginController extends Controller {
                         $authorize = [
                                 'savings' => TRUE,
                                 'loans' => TRUE,
-                                'members' => TRUE
+                                'members' => TRUE,
+                                'expenses'=>TRUE,
+                                'banked'=>TRUE
                             ];
 
                $this->session->set('authorize', $authorize);

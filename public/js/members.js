@@ -493,6 +493,30 @@ var vmAgents = new Vue({
                 this.roles = [];
             });
         },
+        sendMessage: function(){
+            $('#btn-send').button('loading');
+            $('#send-message').button('loading');
+
+            var vm = this;
+            axios.post(vm.baseUrl + '/members/sendmessage', vm.message).then(function (response) {
+                var data = response.data;
+                console.log("Response received: " + JSON.stringify(data));
+                $('#btn-sms').button('reset');
+                $('#btn-send').button('reset');
+                if (data.status) {
+                    alertify.notify(data.success, 'success', 5, function () {});
+                    vm.message = '';
+                   
+                    $('#sms-send').modal('hide');
+                } else {
+                    alertify.notify(data.error, 'error', 5, function () {});
+                }
+            }).catch(function (error) {
+                $('#send-message').button('reset');
+                $('#btn-send').button('reset');
+                alertify.notify(error, 'error', 5, function () {});
+            });
+        },
         exportAgents: function () {
             var data = [];
 

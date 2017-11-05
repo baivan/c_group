@@ -107,7 +107,7 @@ var columns = [
     },
     {
         name: 'memberName',
-        title: 'Member Name',
+        title: 'Given To',
         sortField: 'memberName',
         titleClass: 'table-header',
         dataClass: 'link-table-data',
@@ -115,9 +115,27 @@ var columns = [
 
     },
     {
-        name: 'savingsAmount',
+        name: 'memberName',
+        title: 'Created By',
+        sortField: 'memberName',
+        titleClass: 'table-header',
+        dataClass: 'link-table-data',
+        callback: 'customerName'
+
+    },
+    {
+        name: 'description',
+        title: 'Description',
+        sortField: 'description',
+        titleClass: 'table-header',
+        dataClass: 'link-table-data',
+        callback: 'customerName'
+
+    },
+    {
+        name: 'amount',
         title: 'Amount',
-        sortField: 'savingsAmount',
+        sortField: 'amount',
         titleClass: 'table-header',
         dataClass: 'table-data'
     },
@@ -157,7 +175,7 @@ Vue.component('update-loan-action', {
         itemAction: function (action, data) {
           //  console.log("Updating a sale: " + JSON.stringify(data));
             if (action == 'update-savings') { 
-               // vmSavings.savingsData = data;
+               // vmSavings.expensesData = data;
 
                 // if (data.status == 0) {
                 //     updateLoanModal();
@@ -182,7 +200,7 @@ Vue.component('update-loan-action', {
 
 
 var vmSavings = new Vue({
-    el: '#transactions-container',
+    el: '#expenses-container',
     data: {
         unsavings_table_loading: false,
         savings_table_loading: false,
@@ -202,8 +220,7 @@ var vmSavings = new Vue({
         perPage: 10,
         unresolvedPerPage: 10,
         paginationComponent: 'vuetable-pagination',
-        paginationInfoTemplate: 'Displaying {from} to {to} of {total} Savings',
-        unresolvedPaginationInfoTemplate: 'Displaying {from} to {to} of {total} unknown payments',
+        paginationInfoTemplate: 'Displaying {from} to {to} of {total} expenses',
         moreParams: ['filter=', 'start=', 'end=', 'isExport='],
         itemActions: [
             {
@@ -216,35 +233,19 @@ var vmSavings = new Vue({
         ],
         search: '',
         search_unresolved: '',
-        transactionData: '',
-        serialNumber: '',
-        resolvedToExport: '',
-        unresolvedToExport: '',
         savings_amount:'',
         members:[],
         selected_member:'',
-        total_savings:'',
-        savingsData:[],
-//        baseUrl: 'http://api.southwell.io/envirofit'
+        total_expenses:'',
+        expensesData:[],
+        expense_amount:'',
+        selected_member:'',
+        expense_description:'',
+        membersData:'',
        baseUrl: baseUrl
     },
     computed: {
-        unresolved_tab: function () {
-            return this.isUnresolvedTabActive;
-        },
-        header_label: function () {
-            if (this.isUnresolvedTabActive) {
-                return 'Unknown Payments';
-            } else {
-                return 'Reconciled Payments';
-            }
-        },
-        transaction: function () {
-            return this.transactionData;
-        },
-        depositAmount: function () {
-            return this.transactionData.depositAmount;
-        }
+        
     },
     methods: {
         customerName: function (value) {
@@ -263,7 +264,7 @@ var vmSavings = new Vue({
                 this.moreParams[1] = 'start=' + start;
                 this.moreParams[2] = 'end=' + end;
                 this.moreParams[3] = 'isExport='+true;
-                this.$refs.vuetable_resolved.$nextTick(function () {
+                this.$refs.vuetable_expenses.$nextTick(function () {
                     this.$dispatch('vuetable:refresh');
                 });
             }
@@ -281,7 +282,7 @@ var vmSavings = new Vue({
         searchTransactions: function () {
             this.moreParams[0] = 'filter=' + this.search;
             this.$nextTick(function () {
-                this.$refs.vuetable_resolved.$dispatch('vuetable:refresh');
+                this.$refs.vuetable_expenses.$dispatch('vuetable:refresh');
             });
         },
         searchUnresolved: function () {
@@ -290,89 +291,52 @@ var vmSavings = new Vue({
                 this.$refs.vuetable_unresolved.$dispatch('vuetable:refresh');
             });
         },
-        reconcilePayment: function () {
+        getMembers: function () {
+            this.members_select_loading = true;
+            this.$http.get(this.baseUrl + '/members/membernames').then(function (response) {
+                this.members_select_loading = false;
+                var data = response.body;
 
-            var contactsID = $('#payment-customer-select').val();
+                this.$nextTick(function () {
+                    this.membersData = data;
+                });
 
-            if (!contactsID) {
+            }, function (error) {
+                this.members_select_loading = false;
+                this.membersData = [];
+            });
+        },
+        addExpense: function () {
+            if (!this.selected_member || !this.expense_amount || !this.expense_description) {
                 alertify.notify('Missing required data', 'error', 5, function () {});
-                return;
+                return; 
             }
 
-            $('#btn-reconcile').button('loading');
+            $('#btn-expense-new').button('loading');
             var vm = this;
-            axios.post(vm.baseUrl + '/transactions/reconcile', {
-                contactsID: contactsID,
-                transactionID: vm.transactionData.transactionID
-
+            axios.post(vm.baseUrl + '/expenses/create', {
+                memberId: vm.selected_member,
+                amount: vm.expense_amount,
+                description: vm.expense_description
             }).then(function (response) {
                 var data = response.data;
                 console.log("Response received: " + JSON.stringify(data));
-                $('#btn-reconcile').button('reset');
+                $('#btn-expense-new').button('reset');
                 if (data.status) {
-                    vm.serialNumber = '';
-                    vm.transactionData = '';
-                    vm.$refs.vuetable_unresolved.$dispatch('vuetable:reload');
-                    vm.$refs.vuetable_resolved.$dispatch('vuetable:reload');
                     alertify.notify(data.success, 'success', 5, function () {});
-                    $('#payment-reconcile').modal('toggle');
+                    vm.$refs.vuetable_expenses.$dispatch('vuetable:reload');
+                    vm.selected_member = '';
+                    vm.expense_description = '';
+                    vm.expense_amount = '';
+                    
                 } else {
                     alertify.notify(data.error, 'error', 5, function () {});
                 }
             }).catch(function (error) {
-                $('#btn-reconcile').button('reset');
+                $('#btn-expense-new').button('reset');
                 alertify.notify(error, 'error', 5, function () {});
             });
 
-        },
-        exportResolved: function () {
-            var data = [];
-
-            for (var count = 0; count < this.resolvedToExport.length; count++) {
-
-                var item = {
-                    TRANSACTION_ID: this.resolvedToExport[count].transactionID,
-                    TRANSACTION_REFERENCE: this.resolvedToExport[count].referenceNumber,
-                    CUSTOMER: this.resolvedToExport[count].fullName,
-                    DEPOSITOR: this.resolvedToExport[count].depositorName,
-                    DEPOSITOR_MOBILE: this.resolvedToExport[count].mobile,
-                    NATIONAL_ID: this.resolvedToExport[count].nationalID,
-                    DEPOSIT_AMOUNT: this.resolvedToExport[count].depositAmount,
-                    ACCOUNT: this.resolvedToExport[count].accountNumber,
-                    DATE: this.resolvedToExport[count].createdAt
-                };
-
-                data.push(item);
-            }
-
-            exportDate = moment().format('DD_MMMM_YYYY_h:mm');
-
-            console.log("Exporting data: " + JSON.stringify(this.dataToExport));
-            JSONToCSVConvertor(data, 'resolved_' + exportDate, 1);
-        },
-        exportUnresolved: function () {
-            var data = [];
-
-            for (var count = 0; count < this.unresolvedToExport.length; count++) {
-
-                var item = {
-                    TRANSACTION_ID: this.unresolvedToExport[count].transactionID,
-                    TRANSACTION_REFERENCE: this.unresolvedToExport[count].referenceNumber,
-                    ACCOUNT: this.unresolvedToExport[count].accountNumber,
-                    DEPOSITOR: this.unresolvedToExport[count].depositorName,
-                    DEPOSITOR_MOBILE: this.unresolvedToExport[count].mobile,
-                    NATIONAL_ID: this.unresolvedToExport[count].nationalID,
-                    DEPOSIT_AMOUNT: this.unresolvedToExport[count].depositAmount,
-                    DATE: this.unresolvedToExport[count].createdAt
-                };
-
-                data.push(item);
-            }
-
-            exportDate = moment().format('DD_MMMM_YYYY_h:mm');
-
-//            console.log("Exporting data: " + JSON.stringify(this.dataToExport));
-            JSONToCSVConvertor(data, 'unresolved_' + exportDate, 1);
         },
         paginationConfig: function (componentName) {
             if (componentName == 'vuetable-pagination') {
@@ -395,7 +359,7 @@ var vmSavings = new Vue({
     },
     watch: {
         perPage: function (val, oldVal) {
-            this.$refs.vuetable_resolved.$dispatch('vuetable:refresh');
+            this.$refs.vuetable_expenses.$dispatch('vuetable:refresh');
         },
         unresolvedPerPage: function (val, oldVal) {
             this.$refs.vuetable_unresolved.$dispatch('vuetable:refresh');
@@ -405,7 +369,9 @@ var vmSavings = new Vue({
             this.paginationConfig(this.paginationComponent);
         }
     },
-    ready: function () {},
+    ready: function () {
+        this.getMembers();
+    },
     events: {
         'vuetable:row-changed': function (data) {
 //            console.log('row-changed:', data.name);
@@ -450,8 +416,8 @@ var vmSavings = new Vue({
         'vuetable:load-success': function (response) {
             
             this.savings_table_loading = false;
-            this.total_savings = response.data.totalSavingsAmount;
-            this.savingsData = response.data;
+            this.total_expenses = response.data.totalExpenesesAmount;
+            this.expensesData = response.data;
         },
         'vuetable:load-error': function (response) {
             this.savings_table_loading = false;

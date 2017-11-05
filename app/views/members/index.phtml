@@ -4,7 +4,12 @@
         <section class="content container">
             <div class="row">
                 <div class="col-sm-5">
-                    <h3 class="padding-bottom-md">Members <span class="pull-right"><button class="btn bg-primary btn-sm" data-toggle="modal" data-target="#agent-new"><strong>+ New Member</strong></button></span></h3>
+                    <h3 class="padding-bottom-md">Members <span class="pull-right">
+                      <button class="btn bg-primary btn-sm" data-toggle="modal" data-target="#agent-new"><strong>+ New Member</strong>
+                      </button>
+                      <button class="btn bg-primary btn-sm" data-toggle="modal" data-target="#sms-send" id="send-message"><strong>Send Message</strong>
+                      </button></span></h3>
+
                     
                     <div class="table-responsive">
                         <div v-show="agents_table_loading"><div style="display: inline-block;" class="loader left"></div><span class="right margin-left-lg"><strong>Members Data Loading...</strong></span></div>
@@ -266,6 +271,29 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button id="btn-saving-new" @click='transferSaving' type="button" class="btn bg-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Adding Savings">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="sms-send">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">New SMS</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form">
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea class="form-control" rows="4" v-model="message" placeholder="Type Message"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btn-send" @click='sendMessage' type="button" class="btn bg-primary" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Sending Message">Send Message</button>
                 </div>
             </div>
         </div>

@@ -23,7 +23,7 @@ class MembersController extends ControllerBase {
 
         $this->view->disable();
         $response = NULL;
-
+ 
         try {
             $token = $this->config->endpoints->token;
             $requestData = $this->request->getJsonRawBody();
@@ -207,12 +207,6 @@ class MembersController extends ControllerBase {
 
         $users = $this->rawSelect($selectQuery);
         $exportUsers = $this->rawSelect($exportQuery);
-
-       
-
-        
-
-
 
             if ($users) {
                 
@@ -529,6 +523,76 @@ class MembersController extends ControllerBase {
             $this->curlRequestInstance->sendHttpResponse($response);
         }
 
+    }
+
+    public function sendmessageAction(){
+        $this->view->disable();
+        $response = NULL;
+
+        try {
+
+            $message = $this->request->get('message') ? $this->request->get('message') : '';
+
+            $members = $this->rawSelect("SELECT memberId,memberPhoneNumber,memberName FROM members");
+            $user = $this->session->get('user');
+
+            //send this message to each member
+            foreach ($members as $member) {
+                $message = 'Habari, '.$member['memberName'].' '.$message;
+                $this->sendMessage($member['memberPhoneNumber'],$message);
+
+                //save this message to outbox
+                $outbox = new Outbox();
+                $outbox->memberID = $member['memberId'];
+                $outbox->userID = $user['userId'];
+                $outbox->message = $message;
+                $outbox->createdAt  = date("Y-m-d H:i:s");
+
+                if ($outbox->save() === false) {
+                    $errors = array();
+                    $messages = $outbox->getMessages();
+                    foreach ($messages as $message) {
+                        $e["message"] = $message->getMessage();
+                        $e["field"] = $message->getField();
+                        $errors[] = $e;
+                    }
+                    $this->logger->logMessage('sendmessage', 'Server response: ' . json_encode($messages), 0);
+                }
+
+            }
+            $response = [
+                    'status' => TRUE,
+                    'success' => "Message sent successfully"
+                ];
+
+            $this->curlRequestInstance->sendHttpResponse($response);
+        } catch (Exception $e) {
+            $response = [
+                    'status' => false,
+                    'success' => "Message send error"
+                ];
+            $this->curlRequestInstance->sendHttpResponse($response);
+        }
+    }
+
+    public function membernamesAction(){
+            $this->view->disable();
+        $response = NULL;
+
+        try {
+            $members = $this->rawSelect("SELECT memberName,memberId FROM member ");
+
+            if ($members) {
+                $response = $members;
+            } else {
+                $response = [];
+            }
+
+            $this->curlRequestInstance->sendHttpResponse($response);
+        } catch (Exception $e) {
+            $response = [];
+            $this->curlRequestInstance->sendHttpResponse($response);
+        }
     }
 
      public function getSaleItems($salesID) {

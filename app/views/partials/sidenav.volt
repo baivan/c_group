@@ -16,6 +16,12 @@
                     {% if allowed['savings'] %}
                         <li><a href="{{url('savings')}}">Savings</a></li>
                     {% endif %}
+                    {% if allowed['expenses'] %}
+                        <li><a href="{{url('expenses')}}">Expenses</a></li>
+                    {% endif %}
+                    {% if allowed['banked'] %}
+                        <li><a href="{{url('banked')}}">Banked</a></li>
+                    {% endif %}
                    
                     <li>
                         <a href="#" class="" data-toggle="dropdown"><i class="fa fa-user margin-right-sm"></i><span class="caret md"></span></a>
