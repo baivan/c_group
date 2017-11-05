@@ -284,7 +284,7 @@ var vmAgents = new Vue({
                 roleID: vm.selected_role
             }).then(function (response) {
                 var data = response.data;
-                console.log("Response received: " + JSON.stringify(data));
+               // console.log("Response received: " + JSON.stringify(data));
                 $('#btn-agent').button('reset');
                 if (data.status) {
                     alertify.notify(data.success, 'success', 5, function () {});
@@ -318,7 +318,7 @@ var vmAgents = new Vue({
                 originMemberId: vm.selected_agent.memberId
             }).then(function (response) { 
                 var data = response.data;
-              //  console.log("Response received: " + JSON.stringify(data));
+              // // console.log("Response received: " + JSON.stringify(data));
                 $('#btn-transfer-savings').button('reset');
                 if (data.status) {
                     alertify.notify(data.success, 'success', 5, function () {});
@@ -349,7 +349,7 @@ var vmAgents = new Vue({
                 memberId: vm.selected_agent.memberId,
             }).then(function (response) {
                 var data = response.data;
-              //  console.log("Response received: " + JSON.stringify(data));
+              // // console.log("Response received: " + JSON.stringify(data));
                 $('#btn-new-savings').button('reset');
                 if (data.status) {
                     alertify.notify(data.success, 'success', 5, function () {});
@@ -379,7 +379,7 @@ var vmAgents = new Vue({
                 memberId: vm.selected_agent.memberId, 
             }).then(function (response) {
                 var data = response.data;
-              //  console.log("Response received: " + JSON.stringify(data));
+              // // console.log("Response received: " + JSON.stringify(data));
                 $('#btn-new-loan').button('reset');
                 if (data.status) {
                     alertify.notify(data.success, 'success', 5, function () {});
@@ -451,7 +451,7 @@ var vmAgents = new Vue({
             this.$refs.vuetable_agents.$dispatch('vuetable:refresh');
         },
         updateAgent: function () {
-//            console.log("Selected Agent Data: "+ JSON.stringify(this.selected_agent));
+//           // console.log("Selected Agent Data: "+ JSON.stringify(this.selected_agent));
 
             if (!this.selected_agent.fullName || !this.selected_agent.nationalIdNumber ||
                     !this.selected_agent.workMobile || !this.selected_agent.location || !this.selected_agent.workEmail || !this.selected_agent.agentType) {
@@ -463,7 +463,7 @@ var vmAgents = new Vue({
             var vm = this;
             axios.post(vm.baseUrl + '/users/update', vm.selected_agent).then(function (response) {
                 var data = response.data;
-//                console.log("Response received: " + JSON.stringify(data));
+//               // console.log("Response received: " + JSON.stringify(data));
                 $('#btn-agent-update').button('reset');
                 if (data.status) {
                     alertify.notify(data.success, 'success', 5, function () {});
@@ -482,7 +482,7 @@ var vmAgents = new Vue({
             this.$http.get(this.baseUrl + '/members/roles').then(function (response) {
                 this.roles_select_loading = false;
                 var data = response.body;
-               // console.log("Dispositions: " + JSON.stringify(data));
+               //// console.log("Dispositions: " + JSON.stringify(data));
 
                 this.$nextTick(function () {
                     this.roles = data;
@@ -500,7 +500,7 @@ var vmAgents = new Vue({
             var vm = this;
             axios.post(vm.baseUrl + '/members/sendmessage', vm.message).then(function (response) {
                 var data = response.data;
-                console.log("Response received: " + JSON.stringify(data));
+               // console.log("Response received: " + JSON.stringify(data));
                 $('#btn-sms').button('reset');
                 $('#btn-send').button('reset');
                 if (data.status) {
@@ -543,7 +543,7 @@ var vmAgents = new Vue({
 
             exportDate = moment().format('DD_MMMM_YYYY_h:mm');
 
-//            console.log("Exporting data: " + JSON.stringify(this.dataToExport));
+//           // console.log("Exporting data: " + JSON.stringify(this.dataToExport));
             JSONToCSVConvertor(data, 'agents_' + exportDate, 1);
         },
         paginationConfig: function (componentName) {
@@ -588,7 +588,7 @@ var vmAgents = new Vue({
     },
     events: {
         'vuetable:row-changed': function (data) {
-//            console.log('row-changed:', data.name);
+//           // console.log('row-changed:', data.name);
         },
         'vuetable:row-clicked': function (data, event) {},
         'vuetable:cell-clicked': function (data, field, event) {
@@ -600,18 +600,18 @@ var vmAgents = new Vue({
 
         },
         'vuetable:action': function (action, data) {
-//            console.log('vuetable:action', action, data);
+//           // console.log('vuetable:action', action, data);
         },
         'vuetable:load-success': function (response) {
             this.agents_table_loading = false;
 
             if(response.data.type=='members'){
-                console.log("Members "+JSON.stringify(response.data));
+               // console.log("Members "+JSON.stringify(response.data));
                this.membersData = response.data.data;
             }
            // this.agentsToExport = response.data.exportAgents;
             
-           //console.log("Vuetable data: " + JSON.stringify(response));
+           ////console.log("Vuetable data: " + JSON.stringify(response));
         },
         'vuetable:load-error': function (response) {
             if (response.status == 400) {

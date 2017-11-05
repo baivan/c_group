@@ -180,7 +180,7 @@ Vue.component('update-loan-action', {
     },
     methods: {
         itemAction: function (action, data) {
-          //  console.log("Updating a sale: " + JSON.stringify(data));
+          ////  console.log("Updating a sale: " + JSON.stringify(data));
             if (action == 'update-savings') { 
                // vmSavings.expensesData = data;
 
@@ -330,7 +330,7 @@ var vmSavings = new Vue({
                 transactionReference:vm.reference_number
             }).then(function (response) {
                 var data = response.data;
-               // console.log("Response received: " + JSON.stringify(data));
+              // // console.log("Response received: " + JSON.stringify(data));
                 $('#btn-expense-new').button('reset');
                 if (data.status) {
                     alertify.notify(data.success, 'success', 5, function () {});
@@ -385,13 +385,13 @@ var vmSavings = new Vue({
     },
     events: {
         'vuetable:row-changed': function (data) {
-//            console.log('row-changed:', data.name);
+//        //    console.log('row-changed:', data.name);
         },
         'vuetable:row-clicked': function (data, event) {
-//            console.log('row-clicked:', data.name);
+//        //    console.log('row-clicked:', data.name);
         },
         'vuetable:cell-clicked': function (data, field, event) {
-            console.log("Transaction Data: "+JSON.stringify(data));
+        //    console.log("Transaction Data: "+JSON.stringify(data));
             if (field.name == 'fullName' && (data.customerID || data.prospectsID)) {
                 var customerID = 0;
                 var prospectsID = 0;
@@ -410,7 +410,7 @@ var vmSavings = new Vue({
         'vuetable:action': function (action, data) {
 
             if (action === 'reconcile') {
-                console.log("Transaction Data: " + JSON.stringify(data));
+            //    console.log("Transaction Data: " + JSON.stringify(data));
                 this.transactionData = data;
                 reconcilePaymentModal();
             }

@@ -533,7 +533,7 @@ class MembersController extends ControllerBase {
 
             $message = $this->request->get('message') ? $this->request->get('message') : '';
 
-            $members = $this->rawSelect("SELECT memberId,memberPhoneNumber,memberName FROM members");
+            $members = $this->rawSelect("SELECT memberId,memberPhoneNumber,memberName FROM member ");
             $user = $this->session->get('user');
 
             //send this message to each member

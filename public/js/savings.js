@@ -155,7 +155,7 @@ Vue.component('update-loan-action', {
     },
     methods: {
         itemAction: function (action, data) {
-          //  console.log("Updating a sale: " + JSON.stringify(data));
+          // // console.log("Updating a sale: " + JSON.stringify(data));
             if (action == 'update-savings') { 
                // vmSavings.savingsData = data;
 
@@ -307,7 +307,7 @@ var vmSavings = new Vue({
 
             }).then(function (response) {
                 var data = response.data;
-                console.log("Response received: " + JSON.stringify(data));
+               // console.log("Response received: " + JSON.stringify(data));
                 $('#btn-reconcile').button('reset');
                 if (data.status) {
                     vm.serialNumber = '';
@@ -347,7 +347,7 @@ var vmSavings = new Vue({
 
             exportDate = moment().format('DD_MMMM_YYYY_h:mm');
 
-            console.log("Exporting data: " + JSON.stringify(this.dataToExport));
+           // console.log("Exporting data: " + JSON.stringify(this.dataToExport));
             JSONToCSVConvertor(data, 'resolved_' + exportDate, 1);
         },
         exportUnresolved: function () {
@@ -371,7 +371,7 @@ var vmSavings = new Vue({
 
             exportDate = moment().format('DD_MMMM_YYYY_h:mm');
 
-//            console.log("Exporting data: " + JSON.stringify(this.dataToExport));
+//           // console.log("Exporting data: " + JSON.stringify(this.dataToExport));
             JSONToCSVConvertor(data, 'unresolved_' + exportDate, 1);
         },
         paginationConfig: function (componentName) {
@@ -408,13 +408,13 @@ var vmSavings = new Vue({
     ready: function () {},
     events: {
         'vuetable:row-changed': function (data) {
-//            console.log('row-changed:', data.name);
+//           // console.log('row-changed:', data.name);
         },
         'vuetable:row-clicked': function (data, event) {
-//            console.log('row-clicked:', data.name);
+//           // console.log('row-clicked:', data.name);
         },
         'vuetable:cell-clicked': function (data, field, event) {
-            console.log("Transaction Data: "+JSON.stringify(data));
+           // console.log("Transaction Data: "+JSON.stringify(data));
             if (field.name == 'fullName' && (data.customerID || data.prospectsID)) {
                 var customerID = 0;
                 var prospectsID = 0;
@@ -433,7 +433,7 @@ var vmSavings = new Vue({
         'vuetable:action': function (action, data) {
 
             if (action === 'reconcile') {
-                console.log("Transaction Data: " + JSON.stringify(data));
+               // console.log("Transaction Data: " + JSON.stringify(data));
                 this.transactionData = data;
                 reconcilePaymentModal();
             }

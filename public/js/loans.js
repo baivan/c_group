@@ -179,7 +179,7 @@ Vue.component('update-loan-action', {
     },
     methods: {
         itemAction: function (action, data) {
-          //  console.log("Updating a sale: " + JSON.stringify(data));
+          // // console.log("Updating a sale: " + JSON.stringify(data));
             if (action == 'update-loan') { 
                 vmLoans.loanData = data;
 
@@ -330,7 +330,7 @@ var vmLoans = new Vue({
                 prospectsID: prospectsID
             }).then(function (response) {
                 var data = response.data;
-//                console.log("Response received: " + JSON.stringify(data));
+//               // console.log("Response received: " + JSON.stringify(data));
 //                $('#btn-delete-sale').button('reset');
 
                 if (data.status) {
@@ -364,7 +364,7 @@ var vmLoans = new Vue({
                 vm.repayment_amount="";
                 vm.loan_due_date="";
                 vm.loanData="";
-              //  console.log("Response received: " + JSON.stringify(data));
+              // // console.log("Response received: " + JSON.stringify(data));
 
                 $('#btn-edit-loan').button('reset');
                 if (data.status) { 
@@ -418,7 +418,7 @@ var vmLoans = new Vue({
                 loanId: loanId
             }).then(function (response) {
                 var data = response.data;
-              //  console.log("Response received: " + JSON.stringify(data));
+              // // console.log("Response received: " + JSON.stringify(data));
                 $('#btn-edit-loan').button('reset');
                 if (data.status) {
                     alertify.notify(data.success, 'success', 5, function () {});
@@ -439,7 +439,7 @@ var vmLoans = new Vue({
                 loanId: loanId
             }).then(function (response) {
                 var data = response.data;
-              //  console.log("Response received: " + JSON.stringify(data));
+              // // console.log("Response received: " + JSON.stringify(data));
                 $('#btn-edit-loan').button('reset');
                 if (data.status) {
                     alertify.notify(data.success, 'success', 5, function () {});
@@ -454,7 +454,7 @@ var vmLoans = new Vue({
 
         }, 
         paginationConfig: function (componentName) {
-            console.log('paginationConfig: ', componentName);
+           // console.log('paginationConfig: ', componentName);
             if (componentName == 'vuetable-pagination') {
                 this.$broadcast('vuetable-pagination:set-options', {
                     wrapperClass: 'pagination',
@@ -512,7 +512,7 @@ var vmLoans = new Vue({
             this.$http.get(this.baseUrl + '/customers/prospectsources').then(function (response) {
                 this.source_select_loading = false;
                 var data = response.body;
-//                console.log("Dispositions: " + JSON.stringify(data));
+//               // console.log("Dispositions: " + JSON.stringify(data));
                 this.$nextTick(function () {
                     this.roles = data;
                 });
@@ -542,7 +542,7 @@ var vmLoans = new Vue({
 
             exportDate = moment().format('DD_MMMM_YYYY_h:mm');
 
-//            console.log("Exporting data: " + JSON.stringify(this.dataToExport));
+//           // console.log("Exporting data: " + JSON.stringify(this.dataToExport));
             JSONToCSVConvertor(data, 'customers_' + exportDate, 1);
         },
         exportProspects: function () { 
@@ -565,7 +565,7 @@ var vmLoans = new Vue({
 
             exportDate = moment().format('DD_MMMM_YYYY_h:mm');
 
-//            console.log("Exporting data: " + JSON.stringify(this.dataToExport));
+//           // console.log("Exporting data: " + JSON.stringify(this.dataToExport));
             JSONToCSVConvertor(data, 'prospects_' + exportDate, 1);
         }
     },
@@ -583,7 +583,7 @@ var vmLoans = new Vue({
             }
         },
         is_other_source: function (val) {
-//            console.log("Other source change: " + val);
+//           // console.log("Other source change: " + val);
             if (val) {
                 this.selected_prospect_source = '';
             }
@@ -598,13 +598,13 @@ var vmLoans = new Vue({
     },
     events: {
         'vuetable:row-changed': function (data) {
-//            console.log('row-changed:', data.name);
+//           // console.log('row-changed:', data.name);
         },
         'vuetable:row-clicked': function (data, event) {
-//            console.log('row-clicked:', data.name);
+//           // console.log('row-clicked:', data.name);
         },
         'vuetable:cell-clicked': function (data, field, event) {
-//            console.log("Clicking this..." + JSON.stringify(data));
+//           // console.log("Clicking this..." + JSON.stringify(data));
 //            return;
 
             if (field.name == 'fullName' && (data.customerID || data.prospectsID)) {
@@ -626,7 +626,7 @@ var vmLoans = new Vue({
 //            }
         },
         'vuetable:action': function (action, data) {
-//            console.log('vuetable:action', action, data);
+//           // console.log('vuetable:action', action, data);
             if (action == 'delete-customer') {
                 alertify.confirm('DELETE CUSTOMER', 'Are you sure you want to DELETE <strong>' + data.fullName + '</strong>?', function () {
                     vmLoans.deleteCustomer(data.customerID, 0);
@@ -655,7 +655,7 @@ var vmLoans = new Vue({
         },
         'vuetable:load-success': function (response) {
             this.loan_table_loading = false;
-            console.log("testung "+JSON.stringify(response));
+           // console.log("testung "+JSON.stringify(response));
             var repaymentSummary = response.data.repaymentSummary;
             this.total_loans = repaymentSummary.amountToPay;
             this.total_paid = repaymentSummary.repaidAmount;
