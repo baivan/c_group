@@ -530,16 +530,16 @@ class MembersController extends ControllerBase {
         $response = NULL;
 
         try {
-
+            $requestData = $this->request->getJsonRawBody();
             $message =$requestData->message;
             $members = $this->rawSelect("SELECT memberId,memberPhoneNumber,memberName FROM member ");
             $user = $this->session->get('user');
 
+
+
             //send this message to each member
             foreach ($members as $member) {
-                $name = trim($member['memberName']);
-                $messageArray = explode(' ', $name); 
-                $this->sendMessage($member['memberPhoneNumber'],'Hi '.$$messageArray[0].', '.$message);
+                $this->sendMessage($member['memberPhoneNumber'],'Hi '.$member['memberName'].', '.$message);
 
                 //save this message to outbox
                 $outbox = new Outbox();
@@ -556,8 +556,10 @@ class MembersController extends ControllerBase {
                         $e["field"] = $message->getField();
                         $errors[] = $e;
                     }
-                    $this->logger->logMessage('sendmessage', 'Server response: ' . json_encode($messages), 0);
+                    $this->logger->logMessage('outbox', 'outbox create erro: ' . json_encode($message), 0);
                 }
+
+                $this->logger->logMessage('outbox', 'create  success: ' . json_encode($outbox), 0);
 
             }
             $response = [
@@ -580,6 +582,7 @@ class MembersController extends ControllerBase {
         $response = NULL;
 
         try {
+
 
             $members = $this->rawSelect("SELECT memberName,memberId FROM member ");
 

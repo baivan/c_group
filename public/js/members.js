@@ -488,18 +488,27 @@ var vmAgents = new Vue({
                 this.$nextTick(function () {
                     this.roles = data;
                 });
-
+ 
             }, function (error) {
                 this.roles_select_loading = false;
                 this.roles = [];
             });
         },
         sendMessage: function(){
+
+            if (!this.message) {
+                alertify.notify('Message field is empty', 'error', 5, function () {});
+                return; 
+            } 
+
+
             $('#btn-send').button('loading');
             $('#send-message').button('loading');
 
             var vm = this;
-            axios.post(vm.baseUrl + '/members/sendmessage', vm.message).then(function (response) {
+            axios.post(vm.baseUrl + '/members/sendmessage', {
+                message: vm.message
+            }).then(function (response) {
                 var data = response.data;
                // console.log("Response received: " + JSON.stringify(data));
                 $('#btn-send').button('reset');
