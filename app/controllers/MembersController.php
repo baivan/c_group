@@ -545,7 +545,7 @@ class MembersController extends ControllerBase {
                 $outbox = new Outbox();
                 $outbox->memberId = $member['memberId'];
                 $outbox->userId = $user['userId'];
-                $outbox->message = $message; 
+                $outbox->message = $member['memberName'].', '.$message; 
                 $outbox->createdAt  = date("Y-m-d H:i:s");
 
                 if ($outbox->save() === false) {
