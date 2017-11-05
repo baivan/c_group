@@ -501,8 +501,8 @@ var vmAgents = new Vue({
             axios.post(vm.baseUrl + '/members/sendmessage', vm.message).then(function (response) {
                 var data = response.data;
                // console.log("Response received: " + JSON.stringify(data));
-                $('#btn-sms').button('reset');
                 $('#btn-send').button('reset');
+                $('#send-message').button('reset');
                 if (data.status) {
                     alertify.notify(data.success, 'success', 5, function () {});
                     vm.message = '';
@@ -512,8 +512,8 @@ var vmAgents = new Vue({
                     alertify.notify(data.error, 'error', 5, function () {});
                 }
             }).catch(function (error) {
-                $('#send-message').button('reset');
                 $('#btn-send').button('reset');
+                $('#send-message').button('reset');
                 alertify.notify(error, 'error', 5, function () {});
             });
         },

@@ -10,21 +10,21 @@ class Outbox extends \Phalcon\Mvc\Model
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $outboxID;
+    public $outboxId;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $memeberID;
+    public $memberId;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $userID;
+    public $userId;
 
     /**
      *
@@ -78,9 +78,5 @@ class Outbox extends \Phalcon\Mvc\Model
     {
         return parent::findFirst($parameters);
     }
-
-    /*
-    CREATE TABLE `covenant`.`outbox` ( `outboxID` INT NOT NULL AUTO_INCREMENT , `memeberID` INT NOT NULL , `userID` INT NOT NULL , `message` VARCHAR(600) NOT NULL , `createdAt` DATETIME NOT NULL , `updatedAt` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`outboxID`)) ENGINE = InnoDB;
-    */
 
 }

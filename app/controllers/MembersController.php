@@ -531,8 +531,7 @@ class MembersController extends ControllerBase {
 
         try {
 
-            $message = $this->request->get('message') ? $this->request->get('message') : '';
-
+            $message =$requestData->message;
             $members = $this->rawSelect("SELECT memberId,memberPhoneNumber,memberName FROM member ");
             $user = $this->session->get('user');
 
@@ -543,9 +542,9 @@ class MembersController extends ControllerBase {
 
                 //save this message to outbox
                 $outbox = new Outbox();
-                $outbox->memberID = $member['memberId'];
-                $outbox->userID = $user['userId'];
-                $outbox->message = $message;
+                $outbox->memberId = $member['memberId'];
+                $outbox->userId = $user['userId'];
+                $outbox->message = $message; 
                 $outbox->createdAt  = date("Y-m-d H:i:s");
 
                 if ($outbox->save() === false) {
@@ -580,6 +579,7 @@ class MembersController extends ControllerBase {
         $response = NULL;
 
         try {
+
             $members = $this->rawSelect("SELECT memberName,memberId FROM member ");
 
             if ($members) {
