@@ -196,6 +196,7 @@ var vmAgents = new Vue({
         loan_due_date:'',
         membersData:[],
         selected_dest_member:'',
+        message:'',
         transfer_amount:'',
        // baseUrl: 'http://api.southwell.io/envirofit'
         baseUrl: baseUrl

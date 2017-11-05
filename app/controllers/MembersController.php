@@ -55,8 +55,8 @@ class MembersController extends ControllerBase {
             }
             else{
                 $member = new Member();
-                $member->memberName = $requestData->fullNames;
-                $member->memberIdNumber = $requestData->idNumber;
+                $member->memberName = trim($requestData->fullNames);
+                $member->memberIdNumber = trim($requestData->idNumber);
                 $member->memberPhoneNumber = $mobile;
                 $member->memberRole = $requestData->roleID;
                 $member->membershipNumber =  $membershipNumber;//$requestData->fullNames;
@@ -537,8 +537,9 @@ class MembersController extends ControllerBase {
 
             //send this message to each member
             foreach ($members as $member) {
-                $message = 'Habari, '.$member['memberName'].' '.$message;
-                $this->sendMessage($member['memberPhoneNumber'],$message);
+                $name = trim($member['memberName']);
+                $messageArray = explode(' ', $name); 
+                $this->sendMessage($member['memberPhoneNumber'],'Hi '.$$messageArray[0].', '.$message);
 
                 //save this message to outbox
                 $outbox = new Outbox();
