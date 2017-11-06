@@ -408,7 +408,7 @@ class MembersController extends ControllerBase {
            $totalLoanAmountQuery = "SELECT sum(l.amountToPay) as amountToPay, sum(l.repaidAmount) as repaidAmount ";
             
             $baseQuery = " FROM loans l join member m on l.memberId=m.memberId WHERE l.status>=0 ";
-            $selectQuery = "SELECT l.loanId,l.memberId,m.memberName,l.loanAmount,l.loanOfferDate,l.loanRepayDate,l.interestRate,m.memberName,l.createdAt,l.status,l.repaidAmount,l.amountToPay ";
+            $selectQuery = "SELECT l.loanId,l.memberId,m.memberName,l.loanAmount,l.loanOfferDate,l.loanRepayDate,l.interestRate,m.memberName,l.createdAt,l.status,l.repaidAmount,l.amountToPay,(l.amountToPay-l.repaidAmount) as pendingAmount ";
            $whereArray = " " ;
            if($memberId){
                 $whereQuery=" AND l.memberId=$memberId ";
@@ -532,20 +532,31 @@ class MembersController extends ControllerBase {
         try {
             $requestData = $this->request->getJsonRawBody();
             $message =$requestData->message;
-            $members = $this->rawSelect("SELECT memberId,memberPhoneNumber,memberName FROM member ");
+            $recipient = $requestData->recipient;
+
+            $this->logger->logMessage('outbox', 'testing ' . json_encode("SELECT memberId,memberPhoneNumber,memberName FROM member where memberId=$recipient"), 0);
+
+            if($recipient==0 || !$recipient){
+                $members = $this->rawSelect("SELECT memberId,memberPhoneNumber,memberName FROM member ");
+            }
+            else{
+             $members = $this->rawSelect("SELECT memberId,memberPhoneNumber,memberName FROM member where memberId=$recipient");
+            }
+
+            
             $user = $this->session->get('user');
 
 
 
             //send this message to each member
             foreach ($members as $member) {
-                $this->sendMessage($member['memberPhoneNumber'],'Hi '.$member['memberName'].', '.$message);
+                $this->sendMessage($member['memberPhoneNumber'], "Hi ".$member['memberName'].", ".$message);
 
                 //save this message to outbox
                 $outbox = new Outbox();
                 $outbox->memberId = $member['memberId'];
                 $outbox->userId = $user['userId'];
-                $outbox->message = $member['memberName'].', '.$message; 
+                $outbox->message = "Hi ".$member['memberName'].', '.$message; 
                 $outbox->createdAt  = date("Y-m-d H:i:s");
 
                 if ($outbox->save() === false) {

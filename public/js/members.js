@@ -91,12 +91,18 @@ var loanColumns = [
         titleClass: 'table-header',
         dataClass: 'table-data'
     },
-
     {
         name: 'repaidAmount',
         title: 'Paid',
         sortField: 'repaidAmount',
         titleClass: 'table-header',
+        dataClass: 'table-data'
+    },
+    {
+        name: 'pendingAmount',
+        title: 'Pending',
+        sortField: 'pendingAmount',
+        titleClass: 'table-header', 
         dataClass: 'table-data'
     },
     {
@@ -110,7 +116,7 @@ var loanColumns = [
         name: 'loanOfferDate',
         title: 'Issued',
         sortField: 'loanOfferDate',
-        titleClass: 'table-header',
+        titleClass: 'table-header', 
         dataClass: 'table-data',
         callback: 'createdAt'
     },
@@ -196,6 +202,7 @@ var vmAgents = new Vue({
         loan_due_date:'',
         membersData:[],
         selected_dest_member:'',
+        selected_recipient:'',
         message:'',
         transfer_amount:'',
        // baseUrl: 'http://api.southwell.io/envirofit'
@@ -206,7 +213,7 @@ var vmAgents = new Vue({
             return this.agentTypesData;
         },
         is_agent_selected: function () {
-            if (!this.selected_agent) {
+            if (!this.selected_agent) { 
                 return false;
             } else {
                 return true;
@@ -216,7 +223,7 @@ var vmAgents = new Vue({
 //            return this.baseUrl + '/agents/sales/2';
             return this.baseUrl + '/members/savings/' + this.selected_agent.memberId;
         },
-        agent_items_url: function () {
+        member_loans_url: function () {
             return this.baseUrl + '/members/loans/' + this.selected_agent.memberId;
         }
     },
@@ -231,7 +238,7 @@ var vmAgents = new Vue({
             if (!value) {
                 return '-';
             } else {
-                return moment(value).format('DD MMMM YYYY');
+                return moment(value).format('DD MMM YYYY');
             }
 
         },status: function (value) {
@@ -507,7 +514,8 @@ var vmAgents = new Vue({
 
             var vm = this;
             axios.post(vm.baseUrl + '/members/sendmessage', {
-                message: vm.message
+                message: vm.message,
+                recipient:vm.selected_recipient
             }).then(function (response) {
                 var data = response.data;
                // console.log("Response received: " + JSON.stringify(data));
